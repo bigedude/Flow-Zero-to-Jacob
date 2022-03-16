@@ -1,0 +1,36 @@
+pub contract bigeTest {
+
+    pub var resourceArray: @[Emote]
+    pub var resourceDict: @{String: Emote}
+
+    pub resource Emote {
+        pub let message: String
+        init() {
+            self.message = "prayge"
+        }
+    }
+
+    pub fun addResourceArray(emote: @Emote) {
+        self.resourceArray.append(<- emote)
+    }
+
+    pub fun removeResourceArray (index: Int): @Emote {
+        return <- self.resourceArray.remove(at:index)
+    }
+
+    pub fun addResourceDict(emote: @Emote) {
+        let key = emote.message
+        let oldMessage <- self.resourceDict[key]<- emote
+        destroy oldMessage
+    }
+
+    pub fun removeResourceDict(key: String): @Emote {
+        let mood <-self.resourceDict.remove(key:key)!
+        return <- mood
+    }
+
+    init() {
+        self.resourceArray <- []
+        self.resourceDict <- {}
+    }
+}
